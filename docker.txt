@@ -1,0 +1,10 @@
+yum -y install docker-ce
+
+systemctl enable docker
+systemctl start docker
+
+systemctl stop docker
+
+docker version
+
+docker images
