@@ -1,10 +1,11 @@
-yum -y install docker-ce
+yum -y install docker
 
 systemctl enable docker
 systemctl start docker
 
-systemctl stop docker
-
 docker version
-
 docker images
+docker ps 
+docker ps -a
+docker save c7:mfs > xxx.tar
+docker load < xxx.tar
