@@ -1,0 +1,13 @@
+git init liyang
+git config --global user.name "liyang"
+git config --global user.email "235938019@qq.com"
+
+vi xx.txt
+git add xx.txt
+git status
+git commit
+
+git remote add origin https://github.com/samli008/docker.git
+git push -u origin master
+
+git clone https://github.com/samli008/docker
