@@ -9,3 +9,8 @@ docker ps
 docker ps -a
 docker save c7:mfs > xxx.tar
 docker load < xxx.tar
+
+docker run -d --network liyang --ip 192.168.10.11 -h n11 --name n11 --privileged=true c7:mfs
+
+for i in {11..12};do docker run -d --network liyang --ip 192.168.10.$i -h n$i --name n$i --privileged=true c7:mfs;done
+
