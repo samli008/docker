@@ -9,8 +9,18 @@ docker ps
 docker ps -a
 docker save c7:mfs > xxx.tar
 docker load < xxx.tar
+docker rm -f xxx
+docker rmi xxx
+
+docker network create li --subnet=192.168.10.0/24 #default bridge
+docker network create li3 -d overlay --subnet=192.168.11.0/24
+docker network create li2 -d macvlan --subnet=192.168.20.0/24 --ip-range=192.168.20.50/30 --gateway=192.168.20.1 -o parent=eth0
+docker network ls
+docker network inspect li
 
 docker run -d --network liyang --ip 192.168.10.11 -h n11 --name n11 --privileged=true c7:mfs
+
+docker run -p 81:80 -v /data:/data -d --network liyang --ip 192.168.10.11 -h n11 --name n11 --privileged=true c7:mfs
 
 for i in {11..12};do docker run -d --network liyang --ip 192.168.10.$i -h n$i --name n$i --privileged=true c7:mfs;done
 
