@@ -20,3 +20,17 @@ git checkout new-branch
 git push origin new-branch
 git checkout master
 git branch -d new-branch
+
+git fetch origin master
+cd .git
+ls
+more HEAD 
+more refs/heads/master 
+more FETCH_HEAD
+git push origin master
+git log
+git merge master
+git add *
+git commit -a
+git merge FETCH_HEAD 
+git push origin master
