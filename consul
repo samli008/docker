@@ -1,0 +1,67 @@
+wget samli008.3322.org:81/docker/consul 
+mv consul /usr/local/sbin/
+
+#on docker host d2
+consul agent -server -bootstrap -data-dir /root/ -bind=192.168.20.11 &
+#on docker host d3
+consul agent -data-dir /root/ -bind=192.168.20.12 &
+consul join 192.168.20.11
+
+[root@d3 ~]# consul members
+Node  Address             Status  Type    Build  Protocol  DC   Segment
+d2    192.168.20.11:8301  alive   server  1.0.2  2         dc1  <all>
+d3    192.168.20.12:8301  alive   client  1.0.2  2         dc1  <default>
+
+consul leave
+
+# vi /lib/systemd/system/docker.service “ExecStart=" on each docker nodes add following
+
+--cluster-store=consul://localhost:8500 --cluster-advertise=eth0:2376
+
+sed -i '/seccomp/a --cluster-store=consul://localhost:8500 --cluster-advertise=eth0:2376 \\' /lib/systemd/system/docker.service
+
+systemctl daemon-reload
+systemctl restart docker
+
+docker network create liyang -d overlay --subnet=192.168.10.0/24
+docker network inspect docker_gwbridge
+docker network inspect liyang
+
+ip link set docker_gwbridge down
+ip link del dev docker_gwbridge
+docker network rm docker_gwbridge
+
+docker network create \
+--subnet 172.18.0.0/24 \
+--opt com.docker.network.bridge.name=docker_gwbridge \
+--opt com.docker.network.bridge.enable_icc=false \
+--opt com.docker.network.bridge.enable_ip_masquerade=true \
+docker_gwbridge
+
+for i in {13..14};do docker run -d --network liyang --ip 192.168.10.$i -h n$i --name n$i --privileged=true c7:mfs;done
+
+tcpdump -w xxx.pcap -i eth0
+go to wireshark open xxx.pcap
+
+#Docker multiple networks
+docker run -d --net liyang --ip 192.168.10.17 -h n17 --name n17 --privileged=true c7:mfs
+docker network create li —subnet=192.168.7.0/24
+
+docker network connect li --ip 192.168.7.10 n17
+
+cat >> /etc/sysctl.conf < EOF
+net.ipv4.ip_forward = 1
+EOF
+sysctl -p | grep forward
+cat /proc/sys/net/ipv4/ip_forward
+
+cat >> /etc/rc.local < EOF
+iptables -t filter -A FORWARD -i eth0 -o br-790d8a72a6d4 -j ACCEPT
+iptables -t filter -A FORWARD -i br-790d8a72a6d4 -o eth0 -j ACCEPT
+modprobe ip_nat_ftp
+EOF
+
+chmod 755 /etc/rc.d/rc.local
+source  /etc/rc.d/rc.local
+
+route add -net 192.168.7.0/24 gw 192.168.20.13  #on router host
