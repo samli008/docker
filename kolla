@@ -78,7 +78,7 @@ for i in $(docker images |grep centos|awk '{print $1":"$2}');do echo $i;docker t
 for i in `docker images |grep 127 |awk '{print $1":"$2}'`;do echo $i;docker push $i;done
 
 vi /etc/kolla/global.yml
-docker_registry: "127.0.0.1:4000"
+docker_registry: "192.168.6.59:4000"
 docker_namespace: "kolla"
 
 kolla-ansible deploy
@@ -91,3 +91,4 @@ nova list
 vi /usr/share/kolla-ansible/init-runonce #networking script
 
 pip install requests urllib3 pyOpenSSL --force --upgrade
+kolla-ansible destroy --include-images --yes-i-really-really-mean-it
