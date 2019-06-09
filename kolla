@@ -1,0 +1,92 @@
+yum -y install qemu-kvm qemu-kvm-tools libvirt virt-install bridge-utils
+systemctl start libvirtd
+systemctl enable libvirtd
+
+yum -y install docker python-devel libffi-devel gcc openssl-devel libselinux-python git bash-completion net-tools python-pip ansible
+
+pip install -U pip
+pip install kolla-ansible --ignore-installed PyYAML
+pip show kolla-ansible
+pip install python-openstackclient
+pip install -U decorator
+openstack server list
+
+cat > /etc/docker/daemon.json << EOF
+{
+  "registry-mirrors": ["https://dhq9bx4f.mirror.aliyuncs.com"]
+}
+EOF
+
+cd /etc/systemd/system/
+mkdir docker.service.d
+cd docker.service.d
+cat > kolla.conf << EOF
+[Service]
+MountFlags=shared
+EOF 
+systemctl daemon-reload
+systemctl restart docker
+
+docker pull registry:2
+docker run -d --name registry --restart always -p 4000:5000 docker.io/registry:2
+#http://192.168.6.57:4000/v2/_catalog
+
+git clone https://github.com/openstack/kolla
+git clone https://github.com/openstack/kolla-ansible
+#git config http.postBuffer 524288000
+
+mkdir -p /etc/kolla
+cd /etc/kolla
+cp -r /usr/share/kolla-ansible/etc_examples/kolla/* .
+
+cat globals.yml |grep -v ^# |grep -v ^$
+kolla_base_distro: "centos"
+kolla_install_type: "source"
+openstack_release: "rocky"
+kolla_internal_vip_address: "192.168.6.58"
+network_interface: "eth0"
+neutron_external_interface: "eth1"
+glance_enable_rolling_upgrade: "no"
+ironic_dnsmasq_dhcp_range:
+tempest_image_id:
+tempest_flavor_ref_id:
+tempest_public_network_id:
+tempest_floating_network_name:
+
+cd kolla
+pip install -r requirements.txt
+cd kolla-ansible
+pip install -r requirements.txt
+
+cd /etc/kolla/
+kolla-genpwd
+vi passwords.yml 
+keystone_admin_password: admin
+
+vi /etc/ansible/ansible.cfg
+forks          = 100
+host_key_checking = False
+pipelining = True
+
+kolla-ansible prechecks
+kolla-ansible pull
+
+for i in $(docker images |grep centos|awk '{print $1":"$2}');do echo $i;done
+for i in $(docker images |grep centos|awk '{print $1":"$2}');do echo $i;docker tag $i "127.0.0.1:4000$(echo $i |awk -F '.io' {'print $2'})";done
+
+for i in `docker images |grep 127 |awk '{print $1":"$2}'`;do echo $i;docker push $i;done
+
+vi /etc/kolla/global.yml
+docker_registry: "127.0.0.1:4000"
+docker_namespace: "kolla"
+
+kolla-ansible deploy
+docker ps
+kolla-ansible post-deploy
+source /etc/kolla/admin-openrc.sh
+openstack server list
+nova list
+
+vi /usr/share/kolla-ansible/init-runonce #networking script
+
+pip install requests urllib3 pyOpenSSL --force --upgrade

@@ -1,0 +1,6 @@
+read -p "please input upload image name: " image
+
+openstack image create $image \
+--file $image \
+--disk-format qcow2 --container-format bare \
+--public

@@ -1,0 +1,14 @@
+pip download pip -d /root/pip
+pip install pip-19.1.1-py2.py3-none-any.whl
+
+pip download kolla-ansible -d /root/pip
+pip install kolla-ansible --ignore-installed PyYAML --no-index --find-links=/root/pip
+
+pip download python-openstackclient -d /root/pip
+pip install python-openstackclient --no-index --find-links=/root/pip
+
+pip download decorator -d pip
+pip install decorator-4.4.0-py2.py3-none-any.whl
+
+pip download -r requirements.txt -d /root/pip
+pip install --no-index --find-links=/root/pip -r requirements.txt
