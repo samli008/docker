@@ -1,0 +1,16 @@
+#on docker server
+docker pull registry:2
+docker run -d --name registry --restart always -p 4000:5000 docker.io/registry:2
+
+#on docker client support http
+vi  /usr/lib/systemd/system/docker.service
+ExecStart=/usr/bin/dockerd  --insecure-registry 192.168.6.59:4000
+systemctl daemon-reload
+systemctl restart docker
+
+#on docker client tag image; push image; view image from registry
+docker push 192.168.6.69:4000/busybox
+for i in $(docker images |grep centos|awk '{print $1":"$2}');do echo $i;docker tag $i "192.168.6.59:4000$(echo $i |awk -F '.io' {'print $2'})";done
+for i in `docker images |grep 6.59 |awk '{print $1":"$2}'`;do echo $i;docker push $i;done
+
+curl http://192.168.6.59:4000/v2/_catalog
