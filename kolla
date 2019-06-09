@@ -36,7 +36,6 @@ cd /etc/kolla
 cp -r /usr/share/kolla-ansible/etc_examples/kolla/* .
 
 cat globals.yml |grep -v ^# |grep -v ^$
-cat > globals.yml << EOF
 kolla_base_distro: "centos"
 kolla_install_type: "source"
 openstack_release: "rocky"
@@ -49,7 +48,6 @@ tempest_image_id:
 tempest_flavor_ref_id:
 tempest_public_network_id:
 tempest_floating_network_name:
-EOF
 
 git clone https://github.com/openstack/kolla
 git clone https://github.com/openstack/kolla-ansible
