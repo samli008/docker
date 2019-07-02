@@ -90,3 +90,11 @@ vi /usr/share/kolla-ansible/init-runonce #networking script
 
 pip install requests urllib3 pyOpenSSL --force --upgrade
 kolla-ansible destroy --include-images --yes-i-really-really-mean-it
+
+#edit horizon container logo.svg and logo-splash.svg 
+
+docker cp horizon:/var/lib/kolla/venv/lib/python2.7/site-packages/static/dashboard/img/logo-splash.svg ./
+
+docker cp logo-splash.svg horizon:/var/lib/kolla/venv/lib/python2.7/site-packages/static/dashboard/img/
+
+docker restart horizon
