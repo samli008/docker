@@ -19,7 +19,9 @@ groupadd -g 1010 webvirtmgr
 useradd -u 1010 -g webvirtmgr -s /sbin/nologin -d /data/vm webvirtmgr
 chown -R webvirtmgr:webvirtmgr /data/vm
 
-docker run -d -p 8080:8080 -p 6080:6080 --name webvirtmgr -v /data/vm:/data/vm web:v1
+docker run -d -p 8080:8080 -p 6080:6080 --name webvirtmgr -v /data/vm:/data/vm --restart=always web:v1
+
+docker container update --restart=always webvirtmgr
 
 cat > /etc/default/libvirt-bin << EOF
 start_libvirtd="yes"
