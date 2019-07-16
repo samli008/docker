@@ -26,7 +26,7 @@ start_libvirtd="yes"
 libvirtd_opts="-d -l"
 EOF
 
-cat > /etc/libvirt/libvirtd.conf << EOF
+cat > /etc/libvirt/libvirt.conf << EOF
 listen_tls = 0
 listen_tcp = 1
 listen_addr = "0.0.0.0"
