@@ -48,6 +48,9 @@ systemctl restart libvirtd
 #login to docker edit webvirtmgr
 docker exec -it webvirtmgr /bin/bash
 
+#modify novnc config
+sed -i 's/172.17.42.1/0.0.0.0/g' /webvirtmgr/vrtManager/create.py
+
 #modify default admin passwd
 cd /webvirtmgr
 python manage.py changepassword admin
