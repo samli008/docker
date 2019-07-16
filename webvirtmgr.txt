@@ -61,7 +61,7 @@ su - webvirtmgr -s /bin/bash
 ssh-keygen
 touch ~/.ssh/config && echo -e "StrictHostKeyChecking=no\nUserKnownHostsFile=/dev/null" >> ~/.ssh/config
 chmod 0600 ~/.ssh/config
-sh-copy-id root@192.168.6.171
+ssh-copy-id root@192.168.6.171
 
 #login webvirtmgr default user:admin passwd:1234
 http://192.168.6.171:8080
