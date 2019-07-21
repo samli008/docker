@@ -1,3 +1,11 @@
+yum install -y yum-utils \
+  device-mapper-persistent-data \
+  lvm2
+
+wget https://download.docker.com/linux/centos/docker-ce.repo
+
+yum -y install docker-ce
+
 yum -y install docker
 
 systemctl enable docker
