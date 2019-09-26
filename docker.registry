@@ -5,8 +5,11 @@ docker run -d --name registry --restart always -p 4000:5000 docker.io/registry:2
 #on docker client support http
 vi  /usr/lib/systemd/system/docker.service
 ExecStart=/usr/bin/dockerd  --insecure-registry 192.168.6.59:4000
+
+sed -i 's/dockerd/& --insecure-registry 192.168.88.100:4000/' /usr/lib/systemd/system/docker.service
 systemctl daemon-reload
 systemctl restart docker
+systemctl enable docker
 
 #on docker client tag image; push image; view image from registry
 docker push 192.168.6.69:4000/busybox
