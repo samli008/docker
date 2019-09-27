@@ -5,6 +5,8 @@ if [ $sel == 1 ];then
 rm -f /etc/yum.repos.d/*
 cp docker.repo /etc/yum.repos.d/
 yum -y install docker-ce
+systemctl enable docker
+systemctl start docker
 
 elif [ $sel == 2 ];then
 
