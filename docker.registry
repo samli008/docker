@@ -1,6 +1,7 @@
 #on docker server
 docker pull registry:2
-docker run -d --name registry --restart always -p 4000:5000 docker.io/registry:2
+docker load < registry2.tar
+docker run -d -v /root/registry:/var/lib/registry --name registry --restart always -p 4000:5000 registry:2
 
 #on docker client support http
 vi  /usr/lib/systemd/system/docker.service
