@@ -85,6 +85,11 @@ nova list
 vi /usr/share/kolla-ansible/init-runonce #networking script
 
 pip install requests urllib3 pyOpenSSL --force --upgrade
+pip show pyOpenSSL
+cd /usr/lib64/python2.7/site-packages
+ls |grep pyOpenSSL
+mv pyOpenSSL-0.13.1-py2.7.egg-info pyOpenSSL-0.13.1-py2.7.egg-info.bak
+
 kolla-ansible destroy --include-images --yes-i-really-really-mean-it
 
 #edit horizon container logo.svg and logo-splash.svg 
