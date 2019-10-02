@@ -7,7 +7,7 @@ pip install kolla-ansible --ignore-installed PyYAML --no-index --find-links=/roo
 pip download python-openstackclient -d /root/pip
 pip install python-openstackclient --no-index --find-links=/root/pip
 
-pip download decorator -d pip
+pip download decorator -d /root/pip
 pip install decorator-4.4.0-py2.py3-none-any.whl
 
 pip download -r requirements.txt -d /root/pip
