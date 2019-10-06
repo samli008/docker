@@ -17,7 +17,7 @@ listen stats
     stats uri /haproxy_stats
     stats auth admin:admin
     stats admin if TRUE
-frontend ceph-dashboard-https
+frontend nginx-frontend
    mode tcp
    bind :80
    default_backend nginx-backend
@@ -33,6 +33,6 @@ EOF
 
 docker run --name haproxy \
 -v /root/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg \
--p 80:80 \
+-p 81:80 \
 --restart=always \
 -d haproxy
