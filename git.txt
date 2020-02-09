@@ -34,3 +34,4 @@ git add *
 git commit -a
 git merge FETCH_HEAD 
 git push origin master
+git pull
