@@ -19,7 +19,8 @@ services:
       - /root/mysql:/var/lib/mysql
 
 docker-compose up -d
-docker exec -it e49 sh
+docker-compose exec nginx sh
+docker-compose exec mysql bash
 docker-compose ps
 docker-compose down
 docker-compose stop
