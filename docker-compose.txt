@@ -8,6 +8,15 @@ services:
       - "80:80"
     volumes:
       - /root/web:/usr/share/nginx/html:ro
+  mysql:
+    image: mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=liyang
+    volumes:
+      - /root/mysql:/var/lib/mysql
 
 docker-compose up -d
 docker exec -it e49 sh
