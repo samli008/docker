@@ -13,6 +13,9 @@ docker-compose up -d
 docker exec -it e49 sh
 docker-compose ps
 docker-compose down
+docker-compose stop
+docker-compose start
+docker-compose logs
 
 docker-compose up -d --scale nginx=3
 docker-compose exec --index=1 nginx sh
