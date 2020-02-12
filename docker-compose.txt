@@ -1,13 +1,13 @@
 vi docker-compose.yaml
 version: '2'
 services:
-    nginx:
-        image: nginx:li
-        restart: always
-        ports:
-          - "80:80"
-        volumes:
-          - /root/web:/usr/share/nginx/html:ro
+  nginx:
+    image: nginx:li
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - /root/web:/usr/share/nginx/html:ro
 
 docker-compose up -d
 docker exec -it e49 sh
