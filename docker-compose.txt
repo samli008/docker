@@ -27,6 +27,7 @@ services:
       - /root/mysql:/var/lib/mysql
     networks:
       net1:
+
 # docker-compose deploy guacamole 
 version: '2'
 services:
@@ -71,8 +72,4 @@ docker-compose logs
 
 docker-compose up -d --scale nginx=3
 docker-compose exec --index=1 nginx sh
-
-
-
-
 
