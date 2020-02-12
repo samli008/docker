@@ -61,6 +61,16 @@ services:
       - GUACD_HOSTNAME=guacd
       - GUACD_PORT=4822
 
+# config mysql database
+docker cp initdb.sql mysql:/root/
+docker exec -it mysql /bin/bash
+mysql -u root -pliyang
+create database guacamole_db;
+mysql -u root -pliyang guacamole_db < initdb.sql
+create user 'liyang'@'%' identified by 'liyang';
+grant all on guacamole_db.* to 'liyang'@'%';
+select user,host from mysql.user;
+
 docker-compose up -d
 docker-compose exec nginx sh
 docker-compose exec mysql bash
@@ -72,4 +82,3 @@ docker-compose logs
 
 docker-compose up -d --scale nginx=3
 docker-compose exec --index=1 nginx sh
-
