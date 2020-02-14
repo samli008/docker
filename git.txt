@@ -15,6 +15,7 @@ git push -u origin master
 git clone https://github.com/samli008/docker
 
 git rm br*
+git mv xxx dir1/
 git commit -m liyang
 git push origin master
 
