@@ -19,6 +19,8 @@ docker save c7:mfs > xxx.tar
 docker load < xxx.tar
 docker rm -f xxx
 docker rmi xxx
+docker history c7:mfs
+docker logs xxx
 
 docker network create li --subnet=192.168.10.0/24 #default bridge
 docker network create li3 -d overlay --subnet=192.168.11.0/24
