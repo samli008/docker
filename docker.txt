@@ -32,3 +32,4 @@ docker run -p 81:80 -v /data:/data -d --network liyang --ip 192.168.10.11 -h n11
 
 for i in {11..12};do docker run -d --network liyang --ip 192.168.10.$i -h n$i --name n$i --privileged=true c7:mfs;done
 
+docker run -d -p 88:22 -p 139:139 -p 445:445 -p 80:80 -v /share:/share --network liyang --ip=192.168.30.100 -h n11 --name n11 --privileged=true c7:mfs
