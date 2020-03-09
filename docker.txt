@@ -26,9 +26,13 @@ docker stop $(docker ps -a -q) #stop all container
 docker rm $(docker ps -a -q) #remove all container
 docker rmi $(docker images -q) #remove all image
 
+# install docker 18.09
 yum remove docker-ce docker-ce-cli containerd.io
-
 yum install -y docker-ce-18.09.0-3.el7 docker-ce-cli-18.09.0-3.el7 containerd.io-1.2.0-3.el7
+
+# install docker 17.03
+yum remove docker-ce docker-ce-cli containerd.io docker-selinux
+yum -y install --setopt=obsoletes=0 docker-ce-17.03.2.ce-1.el7.centos.x86_64 docker-ce-selinux-17.03.2.ce-1.el7.centos.noarch
 
 docker network create li --subnet=192.168.10.0/24 #default bridge
 docker network create li3 -d overlay --subnet=192.168.11.0/24
