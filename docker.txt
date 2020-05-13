@@ -26,6 +26,13 @@ docker stop $(docker ps -a -q) #stop all container
 docker rm $(docker ps -a -q) #remove all container
 docker rmi $(docker images -q) #remove all image
 
+# modify docker root dir
+vi /usr/lib/systemd/system/docker.service
+ExecStart=/usr/bin/dockerd --graph /data/docker
+systemctl daemon-reload
+systemctl restart docker
+docker info
+
 # install docker 18.09
 yum remove docker-ce docker-ce-cli containerd.io
 yum install -y docker-ce-18.09.0-3.el7 docker-ce-cli-18.09.0-3.el7 containerd.io-1.2.0-3.el7
